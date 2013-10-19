@@ -1,6 +1,6 @@
 # Bioinformatics one-liners
 
-Useful bash one-liners for useful for bioinformatics.  
+Useful bash one-liners for bioinformatics.  
 
 <https://github.com/stephenturner/oneliners> 
 
