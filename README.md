@@ -1,10 +1,10 @@
 # Bioinformatics one-liners
 
-Useful bash one-liners for bioinformatics.  
+Useful bash one-liners for useful for bioinformatics.  
 
 <https://github.com/stephenturner/oneliners> 
 
-Download the [PDF](./README.pdf) here.
+Download the [PDF](./README.md.pdf) here.
 
 ## Sources:
 
