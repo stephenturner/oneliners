@@ -12,6 +12,7 @@ Download the [PDF](./README.md.pdf) here.
 * <https://github.com/lh3/seqtk>
 * <http://lh3lh3.users.sourceforge.net/biounix.shtml>
 * <http://genomespot.blogspot.com/2013/08/a-selection-of-useful-bash-one-liners.html>
+* <http://biowize.wordpress.com/2012/06/15/command-line-magic-for-your-gene-annotations/>
 
 
 ## awk, sed
@@ -208,6 +209,29 @@ Trim 5bp from the left end of each read and 10bp from the right end:
 Untangle a FASTQ file. If a FASTQ file has paired-end reads intermingled, and you want to separate them into separate /1 and /2 files, and assuming the /1 reads precede the /2 reads:
 
     seqtk seq -l0 tangled.fq | gawk '{if ((NR-1) % 8 < 4) print >> "separate_1.fq"; else print >> "separate_2.fq"}'
+
+
+## GFF3 Annotations
+
+Print all sequences annotated in a GFF3 file.
+
+    cut -s -f 1,9 yourannots.gff3 | grep $'\t' | cut -f 1 | sort
+
+Determine all feature types annotated in a GFF3 file.
+
+    grep -v '^#' yourannots.gff3 | cut -s -f 3 | sort
+
+Determine the number of genes annotated in a GFF3 file.
+
+    grep -c $'\tgene\t' yourannots.gff3
+
+Extract all gene IDs from a GFF3 file.
+
+    grep $'\tgene\t' yourannots.gff3 | perl -ne '/ID=([^;]+)/ and printf("%s\n", $1)'
+
+Print length of each gene in a GFF3 file.
+
+    grep $'\tgene\t' yourannots.gff3 | cut -s -f 4,5 | perl -ne '@v = split(/\t/); printf("%d\n", $v[1] - $v[0] + 1)'
 
 
 
