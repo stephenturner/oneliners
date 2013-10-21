@@ -215,11 +215,11 @@ Untangle a FASTQ file. If a FASTQ file has paired-end reads intermingled, and yo
 
 Print all sequences annotated in a GFF3 file.
 
-    cut -s -f 1,9 yourannots.gff3 | grep $'\t' | cut -f 1 | sort
+    cut -s -f 1,9 yourannots.gff3 | grep $'\t' | cut -f 1 | sort | uniq
 
 Determine all feature types annotated in a GFF3 file.
 
-    grep -v '^#' yourannots.gff3 | cut -s -f 3 | sort
+    grep -v '^#' yourannots.gff3 | cut -s -f 3 | sort | uniq
 
 Determine the number of genes annotated in a GFF3 file.
 
