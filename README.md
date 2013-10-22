@@ -23,7 +23,6 @@ Sum column 1 of file.txt:
     awk '{sum+=$1} END {print sum}' file.txt
 
 
-
 Number each line in file.txt:
 
     sed = file.txt | sed 'N;s/\n/ /'
@@ -54,7 +53,6 @@ Basic sequence statistics. Print total number of reads, total number unique read
     cat myfile.fq | awk '((NR-2)%4==0){read=$1;total++;count[read]++}END{for(read in count){if(!max||count[read]>max) {max=count[read];maxRead=read};if(count[read]==1){unique++}};print total,unique,unique*100/total,maxRead,count[maxRead],count[maxRead]*100/total}'
 
 
-
 Convert .bam back to .fastq:
 
     samtools view file.bam | awk 'BEGIN {FS="\t"} {print "@" $1 "\n" $10 "\n+\n" $11}' > file.fq
@@ -67,7 +65,6 @@ Convert .bam back to .fastq:
 Count the number of unique lines in file.txt
 
     cat file.txt | sort | uniq | wc -l
-
 
 
 Find number of lines shared by 2 files:
@@ -103,6 +100,11 @@ Extract fields 2, 4, and 5 from file.txt:
 Print all possible 3mer DNA sequence combinations:
 
     echo {A,C,T,G}{A,C,T,G}{A,C,T,G}
+
+
+Untangle an interleaved paired-end FASTQ file. If a FASTQ file has paired-end reads intermingled, and you want to separate them into separate /1 and /2 files, and assuming the /1 reads precede the /2 reads:
+
+    cat interleaved.fq |paste - - - - - - - - | tee >(cut -f 1-4 | tr "\t" "\n" > deinterleaved_1.fq) | cut -f 5-8 | tr "\t" "\n" > deinterleaved_2.fq
 
 
 
@@ -143,8 +145,6 @@ Index your bam files in parallel, but only echo the commands (`--dry-run`) rathe
 
 
 ## seqtk
-
-
 
 *Download seqtk at <https://github.com/lh3/seqtk>. Seqtk is a fast and lightweight tool for processing sequences in the FASTA or FASTQ format. It seamlessly parses both FASTA and FASTQ files which can also be optionally compressed by gzip.*
 
@@ -206,9 +206,9 @@ Trim 5bp from the left end of each read and 10bp from the right end:
     seqtk trimfq -b 5 -e 10 in.fa > out.fa
 
 
-Untangle a FASTQ file. If a FASTQ file has paired-end reads intermingled, and you want to separate them into separate /1 and /2 files, and assuming the /1 reads precede the /2 reads:
+Untangle an interleaved paired-end FASTQ file. If a FASTQ file has paired-end reads intermingled, and you want to separate them into separate /1 and /2 files, and assuming the /1 reads precede the /2 reads:
 
-    seqtk seq -l0 tangled.fq | gawk '{if ((NR-1) % 8 < 4) print >> "separate_1.fq"; else print >> "separate_2.fq"}'
+    seqtk seq -l0 interleaved.fq | awk '{if ((NR-1) % 8 < 4) print >> "deinterleaved_1.fq"; else print >> "deinterleaved_2.fq"}'
 
 
 ## GFF3 Annotations
