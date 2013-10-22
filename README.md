@@ -13,6 +13,7 @@ Download the [PDF](./README.md.pdf) here.
 * <http://lh3lh3.users.sourceforge.net/biounix.shtml>
 * <http://genomespot.blogspot.com/2013/08/a-selection-of-useful-bash-one-liners.html>
 * <http://biowize.wordpress.com/2012/06/15/command-line-magic-for-your-gene-annotations/>
+* <http://gettinggeneticsdone.blogspot.com/2013/10/useful-linux-oneliners-for-bioinformatics.html#comments>
 
 
 ## awk, sed
@@ -57,6 +58,13 @@ Convert .bam back to .fastq:
 
     samtools view file.bam | awk 'BEGIN {FS="\t"} {print "@" $1 "\n" $10 "\n+\n" $11}' > file.fq
 
+Keep only top bit scores in blast hits (best bit score only):
+
+    awk '{ if(!x[$1]++) {print $0; bitscore=($14-1)} else { if($14>bitscore) print $0} }' blastout.txt
+    
+Keep only top bit scores in blast hits (5 less than the top):
+
+    awk '{ if(!x[$1]++) {print $0; bitscore=($14-6)} else { if($14>bitscore) print $0} }' blastout.txt
 
 
 ## sort, uniq, cut, etc.
@@ -211,28 +219,37 @@ Untangle an interleaved paired-end FASTQ file. If a FASTQ file has paired-end re
     seqtk seq -l0 interleaved.fq | awk '{if ((NR-1) % 8 < 4) print >> "deinterleaved_1.fq"; else print >> "deinterleaved_2.fq"}'
 
 
+
 ## GFF3 Annotations
 
 Print all sequences annotated in a GFF3 file.
 
     cut -s -f 1,9 yourannots.gff3 | grep $'\t' | cut -f 1 | sort | uniq
 
+
 Determine all feature types annotated in a GFF3 file.
 
     grep -v '^#' yourannots.gff3 | cut -s -f 3 | sort | uniq
+
 
 Determine the number of genes annotated in a GFF3 file.
 
     grep -c $'\tgene\t' yourannots.gff3
 
+
 Extract all gene IDs from a GFF3 file.
 
     grep $'\tgene\t' yourannots.gff3 | perl -ne '/ID=([^;]+)/ and printf("%s\n", $1)'
+
 
 Print length of each gene in a GFF3 file.
 
     grep $'\tgene\t' yourannots.gff3 | cut -s -f 4,5 | perl -ne '@v = split(/\t/); printf("%d\n", $v[1] - $v[0] + 1)'
 
+
+FASTA header lines to GFF format (assuming the length is in the header as an appended "\_length" as in [Velvet](http://www.ebi.ac.uk/~zerbino/velvet/) assembled transcripts):
+
+    grep '>' file.fasta | awk -F "_" 'BEGIN{i=1; print "##gff-version 3"}{ print $0"\t BLAT\tEXON\t1\t"$10"\t95\t+\t.\tgene_id="$0";transcript_id=Transcript_"i;i++ }' > file.gff
 
 
 ## Other generally useful aliases for your .bashrc
