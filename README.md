@@ -13,6 +13,7 @@ Download the [PDF](./README.md.pdf) here.
 * <http://lh3lh3.users.sourceforge.net/biounix.shtml>
 * <http://genomespot.blogspot.com/2013/08/a-selection-of-useful-bash-one-liners.html>
 * <http://biowize.wordpress.com/2012/06/15/command-line-magic-for-your-gene-annotations/>
+* <http://genomics-array.blogspot.com/2010/11/some-unixperl-oneliners-for.html>
 * <http://gettinggeneticsdone.blogspot.com/2013/10/useful-linux-oneliners-for-bioinformatics.html#comments>
 
 
@@ -32,6 +33,26 @@ Number each line in file.txt:
 Get unique entries in file.txt based on column 1 (takes only the first instance):
 
     awk '!arr[$2]++' file.txt
+
+
+Print each line where the 5th field is equal to ‘abc123’:
+
+    awk '$5 == "abc123"' file.txt
+
+
+Print each line where the 5th field is *not* equal to ‘abc123’:
+
+    awk '$5 == "abc123"' file.txt
+
+
+Print each line whose 7th field matches the regular expression:
+
+    awk '$7  ~ /^[a-f]/' file.txt
+
+
+Print each line whose 7th field *does not* match the regular expression:
+
+    awk '$7  ~ /^[a-f]/' file.txt
 
 
 Replace all occurances of `foo` with `bar` in file.txt:
@@ -58,13 +79,37 @@ Convert .bam back to .fastq:
 
     samtools view file.bam | awk 'BEGIN {FS="\t"} {print "@" $1 "\n" $10 "\n+\n" $11}' > file.fq
 
+
 Keep only top bit scores in blast hits (best bit score only):
 
     awk '{ if(!x[$1]++) {print $0; bitscore=($14-1)} else { if($14>bitscore) print $0} }' blastout.txt
     
+
 Keep only top bit scores in blast hits (5 less than the top):
 
     awk '{ if(!x[$1]++) {print $0; bitscore=($14-6)} else { if($14>bitscore) print $0} }' blastout.txt
+
+
+Trim leading whitespace in file.txt:
+
+    sed 's/^[ \t]*//' file.txt
+
+
+Trim trailing whitespace in file.txt:
+
+    sed 's/[ \t]*$//' 
+
+
+Trim leading and trailing whitespace in file.txt:
+
+    sed 's/^[ \t]*//;s/[ \t]*$//' file.txt
+
+
+Delete blank lines in file.txt:
+
+    sed '/^$/d'
+
+
 
 
 ## sort, uniq, cut, etc.
@@ -255,6 +300,10 @@ FASTA header lines to GFF format (assuming the length is in the header as an app
 ## Other generally useful aliases for your .bashrc
 
 
+Get a prompt that looks like `user@hostname:/full/path/cwd/:$ `
+
+    export PS1="\u@\h:\w\\$ "
+
 Never type `cd ../../..` again:
 
     alias ..='cd ..'
@@ -267,7 +316,6 @@ Never type `cd ../../..` again:
 Ask before removing or overwriting files:
 
     alias mv="mv -i"
-    alias mf="mv -i"
     alias cp="cp -i"  
     alias rm="rm -i"
 
@@ -296,3 +344,29 @@ Pack and unpack tar.gz files:
 
     alias tarup="tar -zcf"
     alias tardown="tar -zxf"
+
+
+Use `mcd` to create a directory and `cd` to it simultaneously:
+
+    function mcd { mkdir -p "$1" && cd "$1";}
+
+
+Go up to the parent directory and list it's contents:
+
+    alias u="cd ..;ls"
+
+    
+Make grep pretty:
+
+    alias grep="grep --color=auto"
+
+
+Refresh your `.bashrc`:
+
+    alias refresh="source ~/.bashrc"
+
+
+Common typos:
+
+    alias mf="mv -i"
+    alias mroe="more"
