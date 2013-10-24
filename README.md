@@ -97,7 +97,7 @@ Trim leading whitespace in file.txt:
 
 Trim trailing whitespace in file.txt:
 
-    sed 's/[ \t]*$//' 
+    sed 's/[ \t]*$//' file.txt
 
 
 Trim leading and trailing whitespace in file.txt:
@@ -107,7 +107,7 @@ Trim leading and trailing whitespace in file.txt:
 
 Delete blank lines in file.txt:
 
-    sed '/^$/d'
+    sed '/^$/d' file.txt
 
 
 
