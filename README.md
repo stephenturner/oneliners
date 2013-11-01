@@ -18,22 +18,12 @@ Download the [PDF](./README.md.pdf) here.
 * <http://bioexpressblog.wordpress.com/2013/04/05/split-multi-fasta-sequence-file/>
 
 
-## awk, sed
+## Basic awk & sed
 
 
-Sum column 1 of file.txt:
+Extract fields 2, 4, and 5 from file.txt:
 
-    awk '{sum+=$1} END {print sum}' file.txt
-
-
-Number each line in file.txt:
-
-    sed = file.txt | sed 'N;s/\n/ /'
-
-
-Get unique entries in file.txt based on column 1 (takes only the first instance):
-
-    awk '!arr[$2]++' file.txt
+    awk '{print $2,$4,$5}' input.txt 
 
 
 Print each line where the 5th field is equal to ‘abc123’:
@@ -56,39 +46,34 @@ Print each line whose 7th field *does not* match the regular expression:
     awk '$7  ~ /^[a-f]/' file.txt
 
 
+Get unique entries in file.txt based on column 1 (takes only the first instance):
+
+    awk '!arr[$2]++' file.txt
+
+
+Print rows where column 3 is larger than column 5 in file.txt:
+
+    awk '$3>$5' file.txt
+
+
+Sum column 1 of file.txt:
+
+    awk '{sum+=$1} END {print sum}' file.txt
+
+
+Compute the mean of column 2: 
+
+    awk '{x+=$2}END{print x/NR}' file.txt
+
+
+Number each line in file.txt:
+
+    sed = file.txt | sed 'N;s/\n/ /'
+
+
 Replace all occurances of `foo` with `bar` in file.txt:
 
     sed 's/foo/bar/g' file.txt
-
-
-Convert a FASTQ file to FASTA:
-
-    sed -n '1~4s/^@/>/p;2~4p' file.fq > file.fa
-
-
-Extract every 4th line starting at the second line (extract the sequence from FASTQ file):
-
-    sed -n '2~4p' file.fq
-
-
-Basic sequence statistics. Print total number of reads, total number unique reads, percentage of unique reads, most abundant sequence, its frequency, and percentage of total in file.fq:
-
-    cat myfile.fq | awk '((NR-2)%4==0){read=$1;total++;count[read]++}END{for(read in count){if(!max||count[read]>max) {max=count[read];maxRead=read};if(count[read]==1){unique++}};print total,unique,unique*100/total,maxRead,count[maxRead],count[maxRead]*100/total}'
-
-
-Convert .bam back to .fastq:
-
-    samtools view file.bam | awk 'BEGIN {FS="\t"} {print "@" $1 "\n" $10 "\n+\n" $11}' > file.fq
-
-
-Keep only top bit scores in blast hits (best bit score only):
-
-    awk '{ if(!x[$1]++) {print $0; bitscore=($14-1)} else { if($14>bitscore) print $0} }' blastout.txt
-    
-
-Keep only top bit scores in blast hits (5 less than the top):
-
-    awk '{ if(!x[$1]++) {print $0; bitscore=($14-6)} else { if($14>bitscore) print $0} }' blastout.txt
 
 
 Trim leading whitespace in file.txt:
@@ -111,9 +96,47 @@ Delete blank lines in file.txt:
     sed '/^$/d' file.txt
 
 
+
+## awk & sed for bioinformatics
+
+Returns all lines on Chr 1 between 1MB and 2MB in file.txt. (assumes) chromosome in column 1 and position in column 3 (this same concept can be used to return only variants that above specific allele frequencies):
+
+    cat file.txt | awk '$1=="1"' | awk '$3<=1000000' | awk '$3>=2000000'
+
+
+Basic sequence statistics. Print total number of reads, total number unique reads, percentage of unique reads, most abundant sequence, its frequency, and percentage of total in file.fq:
+
+    cat myfile.fq | awk '((NR-2)%4==0){read=$1;total++;count[read]++}END{for(read in count){if(!max||count[read]>max) {max=count[read];maxRead=read};if(count[read]==1){unique++}};print total,unique,unique*100/total,maxRead,count[maxRead],count[maxRead]*100/total}'
+
+
+Convert .bam back to .fastq:
+
+    samtools view file.bam | awk 'BEGIN {FS="\t"} {print "@" $1 "\n" $10 "\n+\n" $11}' > file.fq
+
+
+Keep only top bit scores in blast hits (best bit score only):
+
+    awk '{ if(!x[$1]++) {print $0; bitscore=($14-1)} else { if($14>bitscore) print $0} }' blastout.txt
+    
+
+Keep only top bit scores in blast hits (5 less than the top):
+
+    awk '{ if(!x[$1]++) {print $0; bitscore=($14-6)} else { if($14>bitscore) print $0} }' blastout.txt
+
+
 Split a multi-FASTA file into individual FASTA files:
 
     awk '/^>/{s=++d".fa"} {print > s}' multi.fa
+
+
+Convert a FASTQ file to FASTA:
+
+    sed -n '1~4s/^@/>/p;2~4p' file.fq > file.fa
+
+
+Extract every 4th line starting at the second line (extract the sequence from FASTQ file):
+
+    sed -n '2~4p' file.fq
 
 
 
@@ -130,6 +153,11 @@ Find number of lines shared by 2 files:
     sort file1 file2 | uniq -d
 
 
+Sort numerically (with logs) (g) by column (k) 9:
+
+    sort -gk9 file.txt
+
+
 Find the most common strings in column 2:
 
     cut -f2 file.txt | sort | uniq -c | sort -k1nr | head
@@ -138,21 +166,6 @@ Find the most common strings in column 2:
 Pick 10 random lines from a file:
 
     shuf file.txt | head -n 10
-
-
-Print rows where column 3 is larger than column 5 in file.txt:
-
-    awk '$3>$5' file.txt
-
-
-Compute the mean of column 2: 
-
-    awk '{x+=$2}END{print x/NR}' file.txt
-
-
-Extract fields 2, 4, and 5 from file.txt:
-
-    awk '{print $2,$4,$5}' input.txt 
 
 
 Print all possible 3mer DNA sequence combinations:
