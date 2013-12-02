@@ -33,7 +33,7 @@ Print each line where the 5th field is equal to ‘abc123’:
 
 Print each line where the 5th field is *not* equal to ‘abc123’:
 
-    awk '$5 == "abc123"' file.txt
+    awk '$5 != "abc123"' file.txt
 
 
 Print each line whose 7th field matches the regular expression:
@@ -43,7 +43,7 @@ Print each line whose 7th field matches the regular expression:
 
 Print each line whose 7th field *does not* match the regular expression:
 
-    awk '$7  ~ /^[a-f]/' file.txt
+    awk '$7 !~ /^[a-f]/' file.txt
 
 
 Get unique entries in file.txt based on column 1 (takes only the first instance):
@@ -101,7 +101,7 @@ Delete blank lines in file.txt:
 
 Returns all lines on Chr 1 between 1MB and 2MB in file.txt. (assumes) chromosome in column 1 and position in column 3 (this same concept can be used to return only variants that above specific allele frequencies):
 
-    cat file.txt | awk '$1=="1"' | awk '$3<=1000000' | awk '$3>=2000000'
+    cat file.txt | awk '$1=="1"' | awk '$3>=1000000' | awk '$3<=2000000'
 
 
 Basic sequence statistics. Print total number of reads, total number unique reads, percentage of unique reads, most abundant sequence, its frequency, and percentage of total in file.fq:
@@ -330,6 +330,8 @@ Never type `cd ../../..` again:
     alias .....='cd ../../../../'
     alias ......='cd ../../../../../'
 
+Or use [autojump](https://github.com/joelthelion/autojump), which enable you to navigate filesystem faster
+
 
 Ask before removing or overwriting files:
 
@@ -414,3 +416,4 @@ Common typos:
 
     alias mf="mv -i"
     alias mroe="more"
+    alias c='clear'
