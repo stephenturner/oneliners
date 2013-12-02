@@ -322,15 +322,13 @@ Get a prompt that looks like `user@hostname:/full/path/cwd/:$ `
 
     export PS1="\u@\h:\w\\$ "
 
-Never type `cd ../../..` again:
+Never type `cd ../../..` again (or use [autojump](https://github.com/joelthelion/autojump), which enables you to navigate the filesystem faster):
 
     alias ..='cd ..'
     alias ...='cd ../../'
     alias ....='cd ../../../'
     alias .....='cd ../../../../'
     alias ......='cd ../../../../../'
-
-Or use [autojump](https://github.com/joelthelion/autojump), which enable you to navigate filesystem faster
 
 
 Ask before removing or overwriting files:
