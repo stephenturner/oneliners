@@ -279,7 +279,8 @@ Trim 5bp from the left end of each read and 10bp from the right end:
 
 Untangle an interleaved paired-end FASTQ file. If a FASTQ file has paired-end reads intermingled, and you want to separate them into separate /1 and /2 files, and assuming the /1 reads precede the /2 reads:
 
-    seqtk seq -l0 interleaved.fq | awk '{if ((NR-1) % 8 < 4) print >> "deinterleaved_1.fq"; else print >> "deinterleaved_2.fq"}'
+    seqtk seq -l0 -1 interleaved.fq > deinterleaved_1.fq
+    seqtk seq -l0 -2 interleaved.fq > deinterleaved_2.fq
 
 
 
