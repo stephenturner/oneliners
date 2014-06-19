@@ -46,7 +46,7 @@ Print each line whose 7th field *does not* match the regular expression:
     awk '$7 !~ /^[a-f]/' file.txt
 
 
-Get unique entries in file.txt based on column 1 (takes only the first instance):
+Get unique entries in file.txt based on column 2 (takes only the first instance):
 
     awk '!arr[$2]++' file.txt
 
