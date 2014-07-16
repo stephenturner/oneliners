@@ -1,6 +1,6 @@
 # Bioinformatics one-liners
 
-Useful bash one-liners for useful for bioinformatics.  
+Useful bash one-liners useful for bioinformatics.  
 
 <https://github.com/stephenturner/oneliners> 
 
@@ -70,23 +70,27 @@ Number each line in file.txt:
 
     sed = file.txt | sed 'N;s/\n/ /'
 
+Or:
+
+    cat -n file.txt
+
 
 Replace all occurances of `foo` with `bar` in file.txt:
 
     sed 's/foo/bar/g' file.txt
 
 
-Trim leading whitespace in file.txt:
+Trim leading whitespaces and tabulations in file.txt:
 
     sed 's/^[ \t]*//' file.txt
 
 
-Trim trailing whitespace in file.txt:
+Trim trailing whitespaces and tabulations in file.txt:
 
     sed 's/[ \t]*$//' file.txt
 
 
-Trim leading and trailing whitespace in file.txt:
+Trim leading and trailing whitespaces and tabulations in file.txt:
 
     sed 's/^[ \t]*//;s/[ \t]*$//' file.txt
 
@@ -145,10 +149,10 @@ Extract every 4th line starting at the second line (extract the sequence from FA
 
 Count the number of unique lines in file.txt
 
-    cat file.txt | sort | uniq | wc -l
+    cat file.txt | sort -u | wc -l
 
 
-Find number of lines shared by 2 files:
+Find number of lines shared by 2 files (assumes lines within file1 and file2 are unique):
 
     sort file1 file2 | uniq -d
 
@@ -189,7 +193,7 @@ Search for .bam files anywhere in the current directory recursively:
     find . -name "*.bam"
 
 
-Delete all .bam files:
+Delete all .bam files (Irreversible: use with caution! Confirm list BEFORE deleting):
 
     find . -name "*.bam" | xargs rm
 
@@ -206,7 +210,7 @@ Chastity filter raw Illumina data (grep reads containing `:N:`, append (-A) the 
 
 Run FASTQC in parallel 12 jobs at a time:
 
-    find *.fq | parallel  -j 12 "fastqc {} --outdir ."
+    find *.fq | parallel -j 12 "fastqc {} --outdir ."
 
 
 Index your bam files in parallel, but only echo the commands (`--dry-run`) rather than actually running them:
