@@ -12,8 +12,8 @@ Download the [PDF](./README.md.pdf) here.
 ## Contents
 
 - [Sources](#sources)
-- [Basic awk & sed](#basic-awk-sed)
-- [awk & sed for bioinformatics](#awk-sed-for-bioinformatics)
+- [Basic awk & sed](#basic-awk--sed)
+- [awk & sed for bioinformatics](#awk--sed-for-bioinformatics)
 - [sort, uniq, cut, etc.](#sort-uniq-cut-etc)
 - [find, xargs, and GNU parallel](#find-xargs-and-gnu-parallel)
 - [seqtk](#seqtk)
