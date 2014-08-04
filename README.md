@@ -1,8 +1,3 @@
-<a class="mk-toclify" id="table-of-contents"></a>
-
-
-
-<a class="mk-toclify" id="bioinformatics-one-liners"></a>
 # Bioinformatics one-liners
 
 
@@ -12,10 +7,8 @@ Useful bash one-liners useful for bioinformatics.
 
 Download the [PDF](./README.md.pdf) here.
 
-<br>
 
 
-<a class="mk-toclify" id="contents"></a>
 ## Contents
 
 - [Sources](#sources)
@@ -28,10 +21,10 @@ Download the [PDF](./README.md.pdf) here.
 - [Other generally useful aliases for your .bashrc](#other-generally-useful-aliases-for-your-bashrc)
     
 
-<br>
-<br>
 
-<a class="mk-toclify" id="sources"></a>
+
+
+
 ## Sources
 
 * <http://gettinggeneticsdone.blogspot.com/2013/10/useful-linux-oneliners-for-bioinformatics.html#comments>
@@ -43,10 +36,8 @@ Download the [PDF](./README.md.pdf) here.
 * <http://genomics-array.blogspot.com/2010/11/some-unixperl-oneliners-for.html>
 * <http://bioexpressblog.wordpress.com/2013/04/05/split-multi-fasta-sequence-file/>
 
-<br>
-<br>
 
-<a class="mk-toclify" id="basic-awk-sed"></a>
+
 ## Basic awk & sed
 [[back to top](#contents)]
 
@@ -129,10 +120,9 @@ Delete blank lines in file.txt:
 
     sed '/^$/d' file.txt
 
-<br>
-<br>
 
-<a class="mk-toclify" id="awk-sed-for-bioinformatics"></a>
+
+
 ## awk & sed for bioinformatics
 [[back to top](#contents)]
 
@@ -175,10 +165,9 @@ Extract every 4th line starting at the second line (extract the sequence from FA
 
     sed -n '2~4p' file.fq
 
-<br>
-<br>
 
-<a class="mk-toclify" id="sort-uniq-cut-etc"></a>
+
+
 ## sort, uniq, cut, etc.
 [[back to top](#contents)]
 
@@ -217,10 +206,9 @@ Untangle an interleaved paired-end FASTQ file. If a FASTQ file has paired-end re
 
     cat interleaved.fq |paste - - - - - - - - | tee >(cut -f 1-4 | tr "\t" "\n" > deinterleaved_1.fq) | cut -f 5-8 | tr "\t" "\n" > deinterleaved_2.fq
 
-<br>
-<br>
 
-<a class="mk-toclify" id="find-xargs-and-gnu-parallel"></a>
+
+
 ## find, xargs, and GNU parallel
 [[back to top](#contents)]
 
@@ -256,11 +244,9 @@ Index your bam files in parallel, but only echo the commands (`--dry-run`) rathe
 
     find *.bam | parallel --dry-run 'samtools index {}'
 
-<br>
-<br>
 
 
-<a class="mk-toclify" id="seqtk"></a>
+
 ## seqtk
 [[back to top](#contents)]
 
@@ -329,10 +315,9 @@ Untangle an interleaved paired-end FASTQ file. If a FASTQ file has paired-end re
     seqtk seq -l0 -1 interleaved.fq > deinterleaved_1.fq
     seqtk seq -l0 -2 interleaved.fq > deinterleaved_2.fq
 
-<br>
-<br>
 
-<a class="mk-toclify" id="gff3-annotations"></a>
+
+
 ## GFF3 Annotations
 [[back to top](#contents)]
 
@@ -365,10 +350,9 @@ FASTA header lines to GFF format (assuming the length is in the header as an app
 
     grep '>' file.fasta | awk -F "_" 'BEGIN{i=1; print "##gff-version 3"}{ print $0"\t BLAT\tEXON\t1\t"$10"\t95\t+\t.\tgene_id="$0";transcript_id=Transcript_"i;i++ }' > file.gff
 
-<br>
-<br>
 
-<a class="mk-toclify" id="other-generally-useful-aliases-for-your-bashrc"></a>
+
+
 ## Other generally useful aliases for your .bashrc
 [[back to top](#contents)]
 
