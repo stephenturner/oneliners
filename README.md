@@ -451,14 +451,19 @@ Refresh your `.bashrc`:
     alias refresh="source ~/.bashrc"
 
 
+Common typos:
+
+    alias mf="mv -i"
+    alias mroe="more"
+    alias c='clear'
+
+
 Use [pandoc](http://johnmacfarlane.net/pandoc/) to convert a markdown file to PDF:
 
     # USAGE: mdpdf document.md document.md.pdf
     alias mdpdf="pandoc -s -V geometry:margin=1in -V documentclass:article -V fontsize=12pt"
 
 
-Common typos:
+Find text in any file (`ft "mytext" *.txt`):
 
-    alias mf="mv -i"
-    alias mroe="more"
-    alias c='clear'
+    function ft { find . -name "$2" -exec grep -il "$1" {} \;; }
