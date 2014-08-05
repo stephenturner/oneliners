@@ -3,7 +3,7 @@
 
 Useful bash one-liners useful for bioinformatics.  
 
-<https://github.com/stephenturner/oneliners> 
+<https://github.com/stephenturner/oneliners>
 
 Download the [PDF](./README.md.pdf) here.
 
@@ -19,9 +19,6 @@ Download the [PDF](./README.md.pdf) here.
 - [seqtk](#seqtk)
 - [GFF3 Annotations](#gff3-annotations)
 - [Other generally useful aliases for your .bashrc](#other-generally-useful-aliases-for-your-bashrc)
-    
-
-
 
 
 
@@ -44,7 +41,7 @@ Download the [PDF](./README.md.pdf) here.
 
 Extract fields 2, 4, and 5 from file.txt:
 
-    awk '{print $2,$4,$5}' input.txt 
+    awk '{print $2,$4,$5}' input.txt
 
 
 Print each line where the 5th field is equal to ‘abc123’:
@@ -82,7 +79,7 @@ Sum column 1 of file.txt:
     awk '{sum+=$1} END {print sum}' file.txt
 
 
-Compute the mean of column 2: 
+Compute the mean of column 2:
 
     awk '{x+=$2}END{print x/NR}' file.txt
 
@@ -126,6 +123,7 @@ Delete blank lines in file.txt:
 ## awk & sed for bioinformatics
 [[back to top](#contents)]
 
+
 Returns all lines on Chr 1 between 1MB and 2MB in file.txt. (assumes) chromosome in column 1 and position in column 3 (this same concept can be used to return only variants that above specific allele frequencies):
 
     cat file.txt | awk '$1=="1"' | awk '$3>=1000000' | awk '$3<=2000000'
@@ -144,7 +142,7 @@ Convert .bam back to .fastq:
 Keep only top bit scores in blast hits (best bit score only):
 
     awk '{ if(!x[$1]++) {print $0; bitscore=($14-1)} else { if($14>bitscore) print $0} }' blastout.txt
-    
+
 
 Keep only top bit scores in blast hits (5 less than the top):
 
@@ -212,6 +210,7 @@ Untangle an interleaved paired-end FASTQ file. If a FASTQ file has paired-end re
 ## find, xargs, and GNU parallel
 [[back to top](#contents)]
 
+
 *Download GNU parallel at <https://www.gnu.org/software/parallel/>.*
 
 
@@ -232,7 +231,7 @@ Rename all .txt files to .bak (backup *.txt before doing something else to them,
 
 Chastity filter raw Illumina data (grep reads containing `:N:`, append (-A) the three lines after the match containing the sequence and quality info, and write a new filtered fastq file):
 
-    find *fq | parallel "cat {} | grep -A 3 '^@.*[^:]*:N:[^:]*:' | grep -v '^\-\-$' > {}.filt.fq" 
+    find *fq | parallel "cat {} | grep -A 3 '^@.*[^:]*:N:[^:]*:' | grep -v '^\-\-$' > {}.filt.fq"
 
 
 Run FASTQC in parallel 12 jobs at a time:
@@ -321,6 +320,7 @@ Untangle an interleaved paired-end FASTQ file. If a FASTQ file has paired-end re
 ## GFF3 Annotations
 [[back to top](#contents)]
 
+
 Print all sequences annotated in a GFF3 file.
 
     cut -s -f 1,9 yourannots.gff3 | grep $'\t' | cut -f 1 | sort | uniq
@@ -360,6 +360,7 @@ FASTA header lines to GFF format (assuming the length is in the header as an app
 Get a prompt that looks like `user@hostname:/full/path/cwd/:$ `
 
     export PS1="\u@\h:\w\\$ "
+
 
 Never type `cd ../../..` again (or use [autojump](https://github.com/joelthelion/autojump), which enables you to navigate the filesystem faster):
 
@@ -402,6 +403,7 @@ Pack and unpack tar.gz files:
     alias tarup="tar -zcf"
     alias tardown="tar -zxf"
 
+
 Or use a generalized `extract` function:
 
     # as suggested by Mendel Cooper in "Advanced Bash Scripting Guide"
@@ -438,7 +440,7 @@ Go up to the parent directory and list it's contents:
 
     alias u="cd ..;ls"
 
-    
+
 Make grep pretty:
 
     alias grep="grep --color=auto"
@@ -449,9 +451,14 @@ Refresh your `.bashrc`:
     alias refresh="source ~/.bashrc"
 
 
+Use [pandoc](http://johnmacfarlane.net/pandoc/) to convert a markdown file to PDF:
+
+    # USAGE: mdpdf document.md document.md.pdf
+    alias mdpdf="pandoc -s -V geometry:margin=1in -V documentclass:article -V fontsize=12pt"
+
+
 Common typos:
 
     alias mf="mv -i"
     alias mroe="more"
     alias c='clear'
-
