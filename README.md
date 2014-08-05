@@ -1,12 +1,31 @@
 # Bioinformatics one-liners
 
+
 Useful bash one-liners useful for bioinformatics.  
 
 <https://github.com/stephenturner/oneliners> 
 
 Download the [PDF](./README.md.pdf) here.
 
-## Sources:
+
+
+## Contents
+
+- [Sources](#sources)
+- [Basic awk & sed](#basic-awk--sed)
+- [awk & sed for bioinformatics](#awk--sed-for-bioinformatics)
+- [sort, uniq, cut, etc.](#sort-uniq-cut-etc)
+- [find, xargs, and GNU parallel](#find-xargs-and-gnu-parallel)
+- [seqtk](#seqtk)
+- [GFF3 Annotations](#gff3-annotations)
+- [Other generally useful aliases for your .bashrc](#other-generally-useful-aliases-for-your-bashrc)
+    
+
+
+
+
+
+## Sources
 
 * <http://gettinggeneticsdone.blogspot.com/2013/10/useful-linux-oneliners-for-bioinformatics.html#comments>
 * <http://sed.sourceforge.net/sed1line.txt>
@@ -18,7 +37,9 @@ Download the [PDF](./README.md.pdf) here.
 * <http://bioexpressblog.wordpress.com/2013/04/05/split-multi-fasta-sequence-file/>
 
 
+
 ## Basic awk & sed
+[[back to top](#contents)]
 
 
 Extract fields 2, 4, and 5 from file.txt:
@@ -101,7 +122,9 @@ Delete blank lines in file.txt:
 
 
 
+
 ## awk & sed for bioinformatics
+[[back to top](#contents)]
 
 Returns all lines on Chr 1 between 1MB and 2MB in file.txt. (assumes) chromosome in column 1 and position in column 3 (this same concept can be used to return only variants that above specific allele frequencies):
 
@@ -144,7 +167,9 @@ Extract every 4th line starting at the second line (extract the sequence from FA
 
 
 
+
 ## sort, uniq, cut, etc.
+[[back to top](#contents)]
 
 
 Count the number of unique lines in file.txt
@@ -183,7 +208,9 @@ Untangle an interleaved paired-end FASTQ file. If a FASTQ file has paired-end re
 
 
 
+
 ## find, xargs, and GNU parallel
+[[back to top](#contents)]
 
 *Download GNU parallel at <https://www.gnu.org/software/parallel/>.*
 
@@ -219,7 +246,9 @@ Index your bam files in parallel, but only echo the commands (`--dry-run`) rathe
 
 
 
+
 ## seqtk
+[[back to top](#contents)]
 
 *Download seqtk at <https://github.com/lh3/seqtk>. Seqtk is a fast and lightweight tool for processing sequences in the FASTA or FASTQ format. It seamlessly parses both FASTA and FASTQ files which can also be optionally compressed by gzip.*
 
@@ -288,7 +317,9 @@ Untangle an interleaved paired-end FASTQ file. If a FASTQ file has paired-end re
 
 
 
+
 ## GFF3 Annotations
+[[back to top](#contents)]
 
 Print all sequences annotated in a GFF3 file.
 
@@ -320,7 +351,10 @@ FASTA header lines to GFF format (assuming the length is in the header as an app
     grep '>' file.fasta | awk -F "_" 'BEGIN{i=1; print "##gff-version 3"}{ print $0"\t BLAT\tEXON\t1\t"$10"\t95\t+\t.\tgene_id="$0";transcript_id=Transcript_"i;i++ }' > file.gff
 
 
+
+
 ## Other generally useful aliases for your .bashrc
+[[back to top](#contents)]
 
 
 Get a prompt that looks like `user@hostname:/full/path/cwd/:$ `
@@ -420,3 +454,4 @@ Common typos:
     alias mf="mv -i"
     alias mroe="more"
     alias c='clear'
+
