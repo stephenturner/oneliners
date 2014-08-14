@@ -153,6 +153,9 @@ Split a multi-FASTA file into individual FASTA files:
 
     awk '/^>/{s=++d".fa"} {print > s}' multi.fa
 
+Output sequence lengths of a fasta file.
+
+    cat file.fa | awk '$0 ~ ">" {print c; c=0;printf substr($0,2,100) "\t"; } $0 !~ ">" {c+=length($0);} END { print c; }'
 
 Convert a FASTQ file to FASTA:
 
