@@ -469,6 +469,8 @@ Find text in any file (`ft "mytext" *.txt`):
 
 ## Etc
 
+[[back to top](#contents)]
+
 Run the last command as root:
 
     sudo !!
