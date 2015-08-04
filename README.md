@@ -27,6 +27,7 @@ Useful bash one-liners useful for bioinformatics (and [some, more generally usef
 * <http://biowize.wordpress.com/2012/06/15/command-line-magic-for-your-gene-annotations/>
 * <http://genomics-array.blogspot.com/2010/11/some-unixperl-oneliners-for.html>
 * <http://bioexpressblog.wordpress.com/2013/04/05/split-multi-fasta-sequence-file/>
+* <http://www.commandlinefu.com/>
 
 
 
