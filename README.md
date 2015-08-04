@@ -1,12 +1,6 @@
 # Bioinformatics one-liners
 
-
-Useful bash one-liners useful for bioinformatics.  
-
-<https://github.com/stephenturner/oneliners>
-
-Download the [PDF](./README.md.pdf) here.
-
+Useful bash one-liners useful for bioinformatics (and [some, more generally useful](#etc)).  
 
 
 ## Contents
@@ -19,6 +13,7 @@ Download the [PDF](./README.md.pdf) here.
 - [seqtk](#seqtk)
 - [GFF3 Annotations](#gff3-annotations)
 - [Other generally useful aliases for your .bashrc](#other-generally-useful-aliases-for-your-bashrc)
+- [Etc.](#etc)
 
 
 
@@ -470,3 +465,71 @@ Use [pandoc](http://johnmacfarlane.net/pandoc/) to convert a markdown file to PD
 Find text in any file (`ft "mytext" *.txt`):
 
     function ft { find . -name "$2" -exec grep -il "$1" {} \;; }
+
+## Etc
+
+Run the last command as root:
+
+    sudo !!
+
+Place the argument of the most recent command on the shell:
+
+    'ALT+.' or '<ESC> .'
+
+Type partial command, kill this command, check something you forgot, yank the command, resume typing:
+
+    <CTRL+u> [...] <CTRL+y>
+
+Jump to a directory, execute a command, and jump back to the current directory:
+
+    (cd /tmp && ls)
+
+Stopwatch (`Enter` or `ctrl-d` to stop):
+
+    time read
+
+Create a script of the last executed command:
+
+    echo "!!" > foo.sh
+
+Reuse _all_ parameter of the previous command line:
+
+    !*
+
+List or delete all files in a folder that don't match a certain file extension (e.g., list things that are _not_ compressed; remove anything that is _not_ a `.foo` or `.bar` file):
+
+    ls !(*.gz)
+    rm !(*.foo|*.bar)
+
+Insert the last command without the last argument:
+
+    !:- <new_last_argument>
+
+Rapidly invoke an editor to write a long, complex, or tricky command:
+
+    fc
+
+Print a specific line (e.g. line 42) from a file:
+
+    sed -n 42p <file>
+
+Terminate a frozen SSH session (enter a new line, type the `~` key then the `.` key):
+
+    [ENTER]~.
+
+Remove blank lines from a file using grep and save output to new file:
+
+    grep . filename > newfilename
+
+Find large files (e.g., >500M):
+
+    find . -type f -size +500M
+
+Exclude a column with cut (e.g., all but the 5th field in a tab-delimited file):
+
+    cut -f5 --complement
+
+Find files containing text (`-l` outputs only the file names, `-i` ignores the case `-r` descends into subdirectories)
+
+    grep -lir "some text" *
+
