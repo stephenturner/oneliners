@@ -80,15 +80,6 @@ Compute the mean of column 2:
     awk '{x+=$2}END{print x/NR}' file.txt
 
 
-Number each line in file.txt:
-
-    sed = file.txt | sed 'N;s/\n/ /'
-
-Or:
-
-    cat -n file.txt
-
-
 Replace all occurances of `foo` with `bar` in file.txt:
 
     sed 's/foo/bar/g' file.txt
@@ -157,10 +148,21 @@ Convert a FASTQ file to FASTA:
 
     sed -n '1~4s/^@/>/p;2~4p' file.fq > file.fa
 
-
 Extract every 4th line starting at the second line (extract the sequence from FASTQ file):
 
     sed -n '2~4p' file.fq
+
+Print everything except the first line
+
+    awk 'NR>1' input.txt
+
+Print rows 20-80:
+
+    awk 'NR>=20&&NR<=80' input.txt
+
+Calculate the sum of column 2 and 3 and put it at the end of a row:
+
+    awk '{print $0,$2+$3}' input.txt
 
 
 
@@ -168,6 +170,9 @@ Extract every 4th line starting at the second line (extract the sequence from FA
 ## sort, uniq, cut, etc.
 [[back to top](#contents)]
 
+Number each line in file.txt:
+
+    cat -n file.txt
 
 Count the number of unique lines in file.txt
 
@@ -468,7 +473,6 @@ Find text in any file (`ft "mytext" *.txt`):
     function ft { find . -name "$2" -exec grep -il "$1" {} \;; }
 
 ## Etc
-
 [[back to top](#contents)]
 
 Run the last command as root:
