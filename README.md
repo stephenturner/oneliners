@@ -164,6 +164,9 @@ Calculate the sum of column 2 and 3 and put it at the end of a row:
 
     awk '{print $0,$2+$3}' input.txt
 
+Calculate the mean length of reads in a fastq file:
+
+    awk 'NR%4==2{sum+=length($0)}END{print sum/(NR/4)}' input.fastq
 
 
 
