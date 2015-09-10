@@ -208,7 +208,10 @@ Untangle an interleaved paired-end FASTQ file. If a FASTQ file has paired-end re
 
     cat interleaved.fq |paste - - - - - - - - | tee >(cut -f 1-4 | tr "\t" "\n" > deinterleaved_1.fq) | cut -f 5-8 | tr "\t" "\n" > deinterleaved_2.fq
 
-
+Extract the last lines of a file:
+	
+	tail +10 file.txt
+	tail -10 file.txt
 
 
 ## find, xargs, and GNU parallel
