@@ -168,7 +168,8 @@ Calculate the mean length of reads in a fastq file:
 
     awk 'NR%4==2{sum+=length($0)}END{print sum/(NR/4)}' input.fastq
 
-
+Convert a VCF file to a BED file
+sed -e 's/chr//' file.vcf | awk '{OFS="\t"; if (!/^#/){print $1,$2-1,$2,$4"/"$5,"+"}}'
 
 ## sort, uniq, cut, etc.
 [[back to top](#contents)]
