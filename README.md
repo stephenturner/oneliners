@@ -185,10 +185,9 @@ Count the number of unique lines in file.txt
     cat file.txt | sort -u | wc -l
 
 
-Find number of lines shared by 2 files (assumes lines within file1 and file2 are unique):
+Find lines shared by 2 files (assumes lines within file1 and file2 are unique; pipe to `wd -l` to count the _number_ of lines shared):
 
     sort file1 file2 | uniq -d
-
 
 Sort numerically (with logs) (g) by column (k) 9:
 
