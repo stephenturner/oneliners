@@ -108,6 +108,7 @@ Delete blank lines in file.txt:
 
 
 ## awk & sed for bioinformatics
+
 [[back to top](#contents)]
 
 
@@ -171,6 +172,7 @@ Calculate the mean length of reads in a fastq file:
 
 
 ## sort, uniq, cut, etc.
+
 [[back to top](#contents)]
 
 Number each line in file.txt:
@@ -211,7 +213,9 @@ Untangle an interleaved paired-end FASTQ file. If a FASTQ file has paired-end re
 
     cat interleaved.fq |paste - - - - - - - - | tee >(cut -f 1-4 | tr "\t" "\n" > deinterleaved_1.fq) | cut -f 5-8 | tr "\t" "\n" > deinterleaved_2.fq
 
+Take a fasta file with a bunch of short scaffolds, e.g., labeled `>Scaffold12345`, remove them, and write a new fasta without them:
 
+    samtools faidx genome.fa && grep -v Scaffold genome.fa.fai | cut -f1 | xargs -n1 samtools faidx genome.fa > genome.noscaffolds.fa
 
 
 ## find, xargs, and GNU parallel
