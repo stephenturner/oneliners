@@ -217,6 +217,9 @@ Take a fasta file with a bunch of short scaffolds, e.g., labeled `>Scaffold12345
 
     samtools faidx genome.fa && grep -v Scaffold genome.fa.fai | cut -f1 | xargs -n1 samtools faidx genome.fa > genome.noscaffolds.fa
 
+Display hidden control characters:
+
+    python -c "f = open('file.txt', 'r'); f.seek(0); file = f.readlines(); print file" 
 
 ## find, xargs, and GNU parallel
 [[back to top](#contents)]
