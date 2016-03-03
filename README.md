@@ -1,5 +1,7 @@
 # Bioinformatics one-liners
 
+[![DOI](https://zenodo.org/badge/3882/stephenturner/oneliners.svg)](https://zenodo.org/badge/latestdoi/3882/stephenturner/oneliners)
+
 Useful bash one-liners useful for bioinformatics (and [some, more generally useful](#etc)).  
 
 
