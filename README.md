@@ -191,6 +191,15 @@ Find lines shared by 2 files (assumes lines within file1 and file2 are unique; p
 
     sort file1 file2 | uniq -d
 
+    # Safer
+    sort -u file1 > a
+    sort -u file2 > b
+    sort a b | uniq -d
+
+    # Use comm
+    comm -12 file1 file2
+
+
 Sort numerically (with logs) (g) by column (k) 9:
 
     sort -gk9 file.txt
@@ -386,6 +395,11 @@ Never type `cd ../../..` again (or use [autojump](https://github.com/joelthelion
     alias .....='cd ../../../../'
     alias ......='cd ../../../../../'
 
+Browse 'up' and 'down'
+
+    alias u='clear; cd ../; pwd; ls -lhGgo'
+    alias d='clear; cd -; ls -lhGgo'
+
 
 Ask before removing or overwriting files:
 
@@ -466,6 +480,9 @@ Refresh your `.bashrc`:
 
     alias refresh="source ~/.bashrc"
 
+Edit your `.bashrc`:
+
+    alias eb="vi ~/.bashrc"
 
 Common typos:
 
