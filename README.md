@@ -34,6 +34,7 @@ Useful bash one-liners useful for bioinformatics (and [some, more generally usef
 
 
 ## Basic awk & sed
+
 [[back to top](#contents)]
 
 
@@ -107,6 +108,11 @@ Delete blank lines in file.txt:
     sed '/^$/d' file.txt
 
 
+Delete everything after and including a line containing `EndOfUsefulData`:
+
+    sed -n '/EndOfUsefulData/,$!p' file.txt
+
+
 
 
 ## awk & sed for bioinformatics
@@ -174,6 +180,7 @@ Calculate the mean length of reads in a fastq file:
 Convert a VCF file to a BED file
 sed -e 's/chr//' file.vcf | awk '{OFS="\t"; if (!/^#/){print $1,$2-1,$2,$4"/"$5,"+"}}'
 
+
 ## sort, uniq, cut, etc.
 
 [[back to top](#contents)]
@@ -232,7 +239,9 @@ Display hidden control characters:
 
     python -c "f = open('file.txt', 'r'); f.seek(0); file = f.readlines(); print file" 
 
+
 ## find, xargs, and GNU parallel
+
 [[back to top](#contents)]
 
 
@@ -272,6 +281,7 @@ Index your bam files in parallel, but only echo the commands (`--dry-run`) rathe
 
 
 ## seqtk
+
 [[back to top](#contents)]
 
 *Download seqtk at <https://github.com/lh3/seqtk>. Seqtk is a fast and lightweight tool for processing sequences in the FASTA or FASTQ format. It seamlessly parses both FASTA and FASTQ files which can also be optionally compressed by gzip.*
@@ -343,6 +353,7 @@ Untangle an interleaved paired-end FASTQ file. If a FASTQ file has paired-end re
 
 
 ## GFF3 Annotations
+
 [[back to top](#contents)]
 
 
@@ -379,6 +390,7 @@ FASTA header lines to GFF format (assuming the length is in the header as an app
 
 
 ## Other generally useful aliases for your .bashrc
+
 [[back to top](#contents)]
 
 
