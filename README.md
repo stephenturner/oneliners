@@ -1,21 +1,19 @@
-# Bioinformatics one-liners
+# 生信单行脚本
 
-[![DOI](https://zenodo.org/badge/3882/stephenturner/oneliners.svg)](https://zenodo.org/badge/latestdoi/3882/stephenturner/oneliners)
-
-Useful bash one-liners useful for bioinformatics (and [some, more generally useful](#etc)).  
+生信息有用的单行脚本 (and [some, more generally useful](#etc)).  
 
 
-## Contents
+## contents
 
-- [Sources](#sources)
-- [Basic awk & sed](#basic-awk--sed)
-- [awk & sed for bioinformatics](#awk--sed-for-bioinformatics)
-- [sort, uniq, cut, etc.](#sort-uniq-cut-etc)
-- [find, xargs, and GNU parallel](#find-xargs-and-gnu-parallel)
+- [来源](#sources)
+- [awk、sed基础](#basic-awk--sed)
+- [awk、sed生信程序](#awk--sed-for-bioinformatics)
+- [sort,uniq和cut等等](#sort-uniq-cut-etc)
+- [find,xargs,和GNU parallel](#find-xargs-and-gnu-parallel)
 - [seqtk](#seqtk)
 - [GFF3 Annotations](#gff3-annotations)
-- [Other generally useful aliases for your .bashrc](#other-generally-useful-aliases-for-your-bashrc)
-- [Etc.](#etc)
+- [其他有用的简称 .bashrc](#other-generally-useful-aliases-for-your-bashrc)
+- [更多...](#etc)
 
 
 
@@ -35,80 +33,80 @@ Useful bash one-liners useful for bioinformatics (and [some, more generally usef
 
 ## Basic awk & sed
 
-[[back to top](#contents)]
+[[返回顶部](#contents)]
 
 
-Extract fields 2, 4, and 5 from file.txt:
+提取文件中的2, 4, and 5 列:
 
-    awk '{print $2,$4,$5}' input.txt
+    awk '{print $2,$4,$5}' file.txt
 
 
-Print each line where the 5th field is equal to ‘abc123’:
+输出第五列等于abc123的行:
 
     awk '$5 == "abc123"' file.txt
 
 
-Print each line where the 5th field is *not* equal to ‘abc123’:
+输出第五列不是abc123的行:
 
     awk '$5 != "abc123"' file.txt
 
 
-Print each line whose 7th field matches the regular expression:
+输出第七列以字母a-f开头的行:
 
     awk '$7  ~ /^[a-f]/' file.txt
 
 
-Print each line whose 7th field *does not* match the regular expression:
+输出第七列不是以字母a-f开头的行:
 
     awk '$7 !~ /^[a-f]/' file.txt
 
 
-Get unique entries in file.txt based on column 2 (takes only the first instance):
+计算第二列不重复的值保存在哈希arr中 (一个值只保存一次):
 
     awk '!arr[$2]++' file.txt
 
 
-Print rows where column 3 is larger than column 5 in file.txt:
+输出第三列的值比第五列大的行:
 
     awk '$3>$5' file.txt
 
 
-Sum column 1 of file.txt:
+计算文件中第一列的累加值，输出最后的结果:
 
     awk '{sum+=$1} END {print sum}' file.txt
 
 
-Compute the mean of column 2:
+计算第二列的平均值:
 
     awk '{x+=$2}END{print x/NR}' file.txt
 
 
-Replace all occurances of `foo` with `bar` in file.txt:
+用bar替换文件中所有的foo:
 
     sed 's/foo/bar/g' file.txt
 
 
-Trim leading whitespaces and tabulations in file.txt:
+消除行开头空和格制表符:
 
     sed 's/^[ \t]*//' file.txt
 
 
-Trim trailing whitespaces and tabulations in file.txt:
+消除行结尾的空格和制表符:
 
     sed 's/[ \t]*$//' file.txt
 
 
-Trim leading and trailing whitespaces and tabulations in file.txt:
+消除行中开头和结尾的空格和制表符:
 
     sed 's/^[ \t]*//;s/[ \t]*$//' file.txt
 
 
-Delete blank lines in file.txt:
+删除空行:
 
     sed '/^$/d' file.txt
 
 
-Delete everything after and including a line containing `EndOfUsefulData`:
+删除包含‘EndOfUsefulData’的行及其后所有的行:
 
     sed -n '/EndOfUsefulData/,$!p' file.txt
 
@@ -117,7 +115,7 @@ Delete everything after and including a line containing `EndOfUsefulData`:
 
 ## awk & sed for bioinformatics
 
-[[back to top](#contents)]
+[[返回](#contents)]
 
 
 Returns all lines on Chr 1 between 1MB and 2MB in file.txt. (assumes) chromosome in column 1 and position in column 3 (this same concept can be used to return only variants that above specific allele frequencies):
@@ -183,7 +181,7 @@ sed -e 's/chr//' file.vcf | awk '{OFS="\t"; if (!/^#/){print $1,$2-1,$2,$4"/"$5,
 
 ## sort, uniq, cut, etc.
 
-[[back to top](#contents)]
+[[返回开头](#contents)]
 
 Number each line in file.txt:
 
