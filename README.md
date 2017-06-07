@@ -7,7 +7,7 @@
 
 - [来源](#sources)
 - [awk、sed基础](#basic-awk--sed)
-- [awk、sed生信程序](#awk--sed-for-bioinformatics)
+- [awk、sed生信单行程序](#awk--sed-for-bioinformatics)
 - [sort,uniq和cut等等](#sort-uniq-cut-etc)
 - [find,xargs,和GNU parallel](#find-xargs-and-gnu-parallel)
 - [seqtk](#seqtk)
@@ -115,67 +115,75 @@
 
 ## awk & sed for bioinformatics
 
+## 生信单行sed,awk
+
 [[返回](#contents)]
 
 
 Returns all lines on Chr 1 between 1MB and 2MB in file.txt. (assumes) chromosome in column 1 and position in column 3 (this same concept can be used to return only variants that above specific allele frequencies):
 
+输出Chr为1在1M和2M之间的所有行。（假设）染色体在第一列，位点在第三列（基于同样的假设可以用来返回类似特定等位基因频率的变异）
+
     cat file.txt | awk '$1=="1"' | awk '$3>=1000000' | awk '$3<=2000000'
 
 
 Basic sequence statistics. Print total number of reads, total number unique reads, percentage of unique reads, most abundant sequence, its frequency, and percentage of total in file.fq:
+基本序列统计。输出总的reads数，不重复的reads总数，不重复reads百分比，最大冗余的序列及其频度以及总占比百分数。
 
     cat myfile.fq | awk '((NR-2)%4==0){read=$1;total++;count[read]++}END{for(read in count){if(!max||count[read]>max) {max=count[read];maxRead=read};if(count[read]==1){unique++}};print total,unique,unique*100/total,maxRead,count[maxRead],count[maxRead]*100/total}'
 
 
-Convert .bam back to .fastq:
+转换.bam为.fastq:
 
     samtools view file.bam | awk 'BEGIN {FS="\t"} {print "@" $1 "\n" $10 "\n+\n" $11}' > file.fq
 
 
 Keep only top bit scores in blast hits (best bit score only):
+只取blast采样中的顶级位点的分数（最高的位点分）
 
     awk '{ if(!x[$1]++) {print $0; bitscore=($14-1)} else { if($14>bitscore) print $0} }' blastout.txt
 
 
 Keep only top bit scores in blast hits (5 less than the top):
+只取blast采样中的顶级位点的分数（比顶级少于5的）
 
     awk '{ if(!x[$1]++) {print $0; bitscore=($14-6)} else { if($14>bitscore) print $0} }' blastout.txt
 
 
-Split a multi-FASTA file into individual FASTA files:
+分割多序列FASTA文件为单序列FASTA文件
 
     awk '/^>/{s=++d".fa"} {print > s}' multi.fa
 
-Output sequence name and its length for every sequence within a fasta file:
+输出fasta文件中的每条序列的序列名称和长度
 
     cat file.fa | awk '$0 ~ ">" {print c; c=0;printf substr($0,2,100) "\t"; } $0 !~ ">" {c+=length($0);} END { print c; }'
 
-Convert a FASTQ file to FASTA:
+转化FASTQ文件为FASTA:
 
     sed -n '1~4s/^@/>/p;2~4p' file.fq > file.fa
 
-Extract every 4th line starting at the second line (extract the sequence from FASTQ file):
+从第二行开始每四行取值（从FASTQ文件提取序列）。
 
     sed -n '2~4p' file.fq
 
-Print everything except the first line
+输出中剔除第一行：
 
     awk 'NR>1' input.txt
 
-Print rows 20-80:
+输出20-80行:
 
     awk 'NR>=20&&NR<=80' input.txt
 
-Calculate the sum of column 2 and 3 and put it at the end of a row:
+计算二，三行列的和并追加到每行后输出
 
     awk '{print $0,$2+$3}' input.txt
 
-Calculate the mean length of reads in a fastq file:
+计算fastq文件平均reads的长度
 
     awk 'NR%4==2{sum+=length($0)}END{print sum/(NR/4)}' input.fastq
 
-Convert a VCF file to a BED file
+转化VSF文件为BED文件
+
 sed -e 's/chr//' file.vcf | awk '{OFS="\t"; if (!/^#/){print $1,$2-1,$2,$4"/"$5,"+"}}'
 
 
@@ -183,44 +191,41 @@ sed -e 's/chr//' file.vcf | awk '{OFS="\t"; if (!/^#/){print $1,$2-1,$2,$4"/"$5,
 
 [[返回开头](#contents)]
 
-Number each line in file.txt:
+输出带行号的内容:
 
     cat -n file.txt
 
-Count the number of unique lines in file.txt
+去重复行计数
 
     cat file.txt | sort -u | wc -l
 
 
-Find lines shared by 2 files (assumes lines within file1 and file2 are unique; pipe to `wd -l` to count the _number_ of lines shared):
+找到两文件都有的行（假设两个文件都是无重复行，重定向执行‘wd -l’计算同样行的行数）
 
     sort file1 file2 | uniq -d
 
-    # Safer
+    # 安全的方法
     sort -u file1 > a
     sort -u file2 > b
     sort a b | uniq -d
 
-    # Use comm
+    # 用comm的方法
     comm -12 file1 file2
 
-
-Sort numerically (with logs) (g) by column (k) 9:
+对文件按照第九列数字顺序排序（g按照常规数值，k列）
 
     sort -gk9 file.txt
 
-
-Find the most common strings in column 2:
+找到第二列出现最多的字符串
 
     cut -f2 file.txt | sort | uniq -c | sort -k1nr | head
 
 
-Pick 10 random lines from a file:
+从文件中随机取10行
 
     shuf file.txt | head -n 10
 
-
-Print all possible 3mer DNA sequence combinations:
+输出所有三个所可能的DNA序列
 
     echo {A,C,T,G}{A,C,T,G}{A,C,T,G}
 
