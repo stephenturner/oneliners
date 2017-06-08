@@ -232,56 +232,59 @@ sed -e 's/chr//' file.vcf | awk '{OFS="\t"; if (!/^#/){print $1,$2-1,$2,$4"/"$5,
 
 Untangle an interleaved paired-end FASTQ file. If a FASTQ file has paired-end reads intermingled, and you want to separate them into separate /1 and /2 files, and assuming the /1 reads precede the /2 reads:
 
+解开一列交错paired-end fastq文件。如果fastq文件有乱序paired-end reads，你想将其分离成单独的/1，/2的文件保存，这里假设/1 reads 在/2 前面：
+
     cat interleaved.fq |paste - - - - - - - - | tee >(cut -f 1-4 | tr "\t" "\n" > deinterleaved_1.fq) | cut -f 5-8 | tr "\t" "\n" > deinterleaved_2.fq
 
 Take a fasta file with a bunch of short scaffolds, e.g., labeled `>Scaffold12345`, remove them, and write a new fasta without them:
 
+将一个fasta文件转成一系列短的scaffolds。比如，标签 ">Scaffold12345"，然后移出他们，保存一个去掉他们的新文件：
+
     samtools faidx genome.fa && grep -v Scaffold genome.fa.fai | cut -f1 | xargs -n1 samtools faidx genome.fa > genome.noscaffolds.fa
 
 Display hidden control characters:
+
+显示一个隐藏的控制字符：
 
     python -c "f = open('file.txt', 'r'); f.seek(0); file = f.readlines(); print file" 
 
 
 ## find, xargs, and GNU parallel
 
-[[back to top](#contents)]
+[[返回](#contents)]
 
 
-*Download GNU parallel at <https://www.gnu.org/software/parallel/>.*
+*通过  <https://www.gnu.org/software/parallel/>.* 载 GNU parallel
 
 
-Search for .bam files anywhere in the current directory recursively:
+搜索文件夹及其子目录中名称为 .bam 文件（目录也算）:
 
     find . -name "*.bam"
 
 
-Delete all .bam files (Irreversible: use with caution! Confirm list BEFORE deleting):
+删除上面搜到的文件列表(不可逆的危险操作，谨慎使用！删除之前请自习确认)
 
     find . -name "*.bam" | xargs rm
 
 
-Rename all .txt files to .bak (backup *.txt before doing something else to them, for example):
+将所有.txt 文件修改为.bak(例如在对*.txt做操作之前用于文件备份)
 
     find . -name "*.txt" | sed "s/\.txt$//" | xargs -i echo mv {}.txt {}.bak | sh
 
 
 Chastity filter raw Illumina data (grep reads containing `:N:`, append (-A) the three lines after the match containing the sequence and quality info, and write a new filtered fastq file):
 
+对Illumina数据做Chastity过滤（grep 查询 包含`:N:`，用（-A）选项第三列信息附加在匹配的包含一个序列质量信息后，并保存为一个新的fasta文件）
+
     find *fq | parallel "cat {} | grep -A 3 '^@.*[^:]*:N:[^:]*:' | grep -v '^\-\-$' > {}.filt.fq"
 
 
-Run FASTQC in parallel 12 jobs at a time:
+通过parallel并行运行12个FASTQC任务
 
     find *.fq | parallel -j 12 "fastqc {} --outdir ."
 
-
-Index your bam files in parallel, but only echo the commands (`--dry-run`) rather than actually running them:
-
+通过parallel给bam做索引，通过`--dry-run`打印测试这些命令，实际上并未做执行。
     find *.bam | parallel --dry-run 'samtools index {}'
-
-
-
 
 ## seqtk
 
