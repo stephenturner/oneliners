@@ -415,15 +415,16 @@ FASTA头列转化为GFF格式（假设头的长度，附加在”\_length“ ,�
 
 ## Other generally useful aliases for your .bashrc
 
+## 有用的别名(.bashrc)
+
 [[back to top](#contents)]
 
 
-Get a prompt that looks like `user@hostname:/full/path/cwd/:$ `
+提示符修改为`user@hostname:/full/path/cwd/:$ `形式
 
     export PS1="\u@\h:\w\\$ "
 
-
-Never type `cd ../../..` again (or use [autojump](https://github.com/joelthelion/autojump), which enables you to navigate the filesystem faster):
+避免反复敲诸如`cd ../../..`的命令（也可以用[autojump](https://github.com/joelthelion/autojump），让你在飞速的转换目录 
 
     alias ..='cd ..'
     alias ...='cd ../../'
@@ -431,20 +432,20 @@ Never type `cd ../../..` again (or use [autojump](https://github.com/joelthelion
     alias .....='cd ../../../../'
     alias ......='cd ../../../../../'
 
-Browse 'up' and 'down'
+向前和向后浏览
 
     alias u='clear; cd ../; pwd; ls -lhGgo'
     alias d='clear; cd -; ls -lhGgo'
 
 
-Ask before removing or overwriting files:
+覆盖文件时候，先确认
 
     alias mv="mv -i"
     alias cp="cp -i"  
     alias rm="rm -i"
 
 
-My favorite `ls` aliases:
+我最喜欢的”ls“别名
 
     alias ls="ls -1p --color=auto"
     alias l="ls -lhGgo"
@@ -458,21 +459,22 @@ My favorite `ls` aliases:
     alias lmore='ls -lhGgo | more'
 
 
-Use `cut` on space- or comma- delimited files:
+对cut空格和逗号，分割文件
 
     alias cuts="cut -d \" \""
     alias cutc="cut -d \",\""
 
 
-Pack and unpack tar.gz files:
+解压缩tar包
 
     alias tarup="tar -zcf"
     alias tardown="tar -zxf"
 
 
-Or use a generalized `extract` function:
+或者可以用更普遍的‘extract’函数
 
-    # as suggested by Mendel Cooper in "Advanced Bash Scripting Guide"
+    # 源于ABSG(Advanced Bash Scripting Guide)中 Mendel Cooper的建议
+  
     extract () {
        if [ -f $1 ] ; then
            case $1 in
@@ -497,54 +499,54 @@ Or use a generalized `extract` function:
 
 
 
-Use `mcd` to create a directory and `cd` to it simultaneously:
+使用别名"mcd"创建一个目录，并且cd到该目录
 
     function mcd { mkdir -p "$1" && cd "$1";}
 
 
-Go up to the parent directory and list it's contents:
+跳转到上级目录，并且列出其内容
 
     alias u="cd ..;ls"
 
-
-Make grep pretty:
+一个好看的grep
 
     alias grep="grep --color=auto"
 
 
-Refresh your `.bashrc`:
+刷新你的`.bashrc`
 
     alias refresh="source ~/.bashrc"
 
-Edit your `.bashrc`:
+编辑你的`.bashrc`
 
     alias eb="vi ~/.bashrc"
 
-Common typos:
+常用错误别称
 
     alias mf="mv -i"
     alias mroe="more"
     alias c='clear'
 
 
-Use [pandoc](http://johnmacfarlane.net/pandoc/) to convert a markdown file to PDF:
+使用 [pandoc](http://johnmacfarlane.net/pandoc/)转化markdown文档为PDF格式:
 
-    # USAGE: mdpdf document.md document.md.pdf
+    # 用法: mdpdf document.md document.md.pdf
     alias mdpdf="pandoc -s -V geometry:margin=1in -V documentclass:article -V fontsize=12pt"
 
 
-Find text in any file (`ft "mytext" *.txt`):
+对当前目录搜索关键词(`ft "mytext" *.txt`):
 
     function ft { find . -name "$2" -exec grep -il "$1" {} \;; }
 
 ## Etc
-[[back to top](#contents)]
 
-Run the last command as root:
+[[返回](#contents)]
+
+重复运行上一条命令:
 
     sudo !!
 
-Place the argument of the most recent command on the shell:
+列出最近最常用的命令行参数(通常是文件)
 
     'ALT+.' or '<ESC> .'
 
