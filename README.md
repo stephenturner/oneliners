@@ -550,60 +550,61 @@ FASTA头列转化为GFF格式（假设头的长度，附加在”\_length“ ,�
 
     'ALT+.' or '<ESC> .'
 
-Type partial command, kill this command, check something you forgot, yank the command, resume typing:
+敲出了部分命令，删除这些输入，查你忘记的明亮，拉回命令，继续输入(<CTRL+u>删除光标之前的输入，<CTRL+y>恢复上个C-U删除字符)
 
     <CTRL+u> [...] <CTRL+y>
 
-Jump to a directory, execute a command, and jump back to the current directory:
-
+跳到一个目录，执行命令，然后返回当前目录(()的用法)
+ 
     (cd /tmp && ls)
 
-Stopwatch (`Enter` or `ctrl-d` to stop):
+记时秒表 (输入`Enter` or `ctrl-d` 停止):
 
     time read
 
-Create a script of the last executed command:
+把上次执行的命令生成一个脚本
 
     echo "!!" > foo.sh
 
-Reuse _all_ parameter of the previous command line:
+重用上次命令的所有参数
 
     !*
 
-List or delete all files in a folder that don't match a certain file extension (e.g., list things that are _not_ compressed; remove anything that is _not_ a `.foo` or `.bar` file):
+列出或者删除一个目录中所有不匹配的特定后缀的文件（例如，列出所有不是压缩的文件，删除所有不以.foo和.bar后缀的文件）
 
     ls !(*.gz)
     rm !(*.foo|*.bar)
 
-Insert the last command without the last argument:
+利用上次的命令，但是不需要他的的参数（重新输入参数）:
 
     !:- <new_last_argument>
 
-Rapidly invoke an editor to write a long, complex, or tricky command:
+激活一个快捷的编辑器，输入，编辑长的，复杂，巧妙的命令:
 
     fc
 
-Print a specific line (e.g. line 42) from a file:
+输出一个特定的行（比如 42行）
 
     sed -n 42p <file>
 
-Terminate a frozen SSH session (enter a new line, type the `~` key then the `.` key):
+终结一个冻结的ssh session(会车换行，敲~键，在敲下.键）
 
     [ENTER]~.
 
-Remove blank lines from a file using grep and save output to new file:
+利用grep去除文件的空行，结果保存到新文件
 
     grep . filename > newfilename
 
-Find large files (e.g., >500M):
+查找大文件（例如，大于500M的）
 
     find . -type f -size +500M
 
-Exclude a column with cut (e.g., all but the 5th field in a tab-delimited file):
+
+利用截取列（例如，一个tab分割文件的第五个域）
 
     cut -f5 --complement
 
-Find files containing text (`-l` outputs only the file names, `-i` ignores the case `-r` descends into subdirectories)
+查找包含特定字符的文件（`-l` 只输出文件名, `-i` 忽略大小写 `-r` 遍历子目录）
 
     grep -lir "some text" *
 
