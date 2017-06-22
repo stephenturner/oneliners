@@ -1,3 +1,5 @@
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
 # 生信单行脚本
 
 生信息有用的单行脚本 (and [some, more generally useful](#etc)).  
