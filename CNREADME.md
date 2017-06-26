@@ -292,80 +292,58 @@ Chastity filter raw Illumina data (grep reads containing `:N:`, append (-A) the 
 
 [[back to top](#contents)]
 
-
 * Seqtk项目托管地址<https://github.com/lh3/seqtk>。Seqtk是一个快捷轻量的处理FASTA和FASTQ格式基因序列的工具。他可以是先FASTA和FASTQ无缝处理和转化，同时支持gzip格式的压缩文件。
-
 
 把FASTQ转化为FASTA:
 
     seqtk seq -a in.fq.gz > out.fa
 
-
-Convert ILLUMINA 1.3+ FASTQ to FASTA and mask bases with quality lower than 20 to lowercases (the 1st command line) or to `N` (the 2nd):
-
 转化ILLUMINA 1.3+ 格式FASTQ为FASTA，并且以小于20的mask bases获得小写字母(第一命令行)或者到N（第二）。
     seqtk seq -aQ64 -q20 in.fq > out.fa
     seqtk seq -aQ64 -q20 -n N in.fq > out.fa
-
-
-Fold long FASTA/Q lines and remove FASTA/Q comments:
 
 折叠长FASTA/Q行，并且去除其注释：
 
     seqtk seq -Cl60 in.fa > out.fa
 
-
-Convert multi-line FASTQ to 4-line FASTQ:
 转化多行FASTQ到四行FASTQ:
 
     seqtk seq -l0 in.fq > out.fq
 
-
-Reverse complement FASTA/Q:
 反转FASTA/Q序列:
 
     seqtk seq -r in.fq > out.fq
 
-
-Extract sequences with names in file `name.lst`, one sequence name per line:
 用序列文件中的名称（比如name.1st）提取序列,一个虚列名一行:
 
     seqtk subseq in.fq name.lst > out.fq
 
 
-Extract sequences in regions contained in file `reg.bed`:
 利用序列文件中的”reg.bed“r信息提取地理信息的序列:
 
     seqtk subseq in.fa reg.bed > out.fa
 
-
-Mask regions in `reg.bed` to lowercases:
 编码‘reg.bed’地理信息到小写
 
     seqtk seq -M reg.bed in.fa > out.fa
 
 
-Subsample 10000 read pairs from two large paired FASTQ files (remember to use the same random seed to keep pairing):
 从两个大的paired FASTQ文件提取10000个read pairs（记得用同样的随机种子保持 paire）
 
     seqtk sample -s100 read1.fq 10000 > sub1.fq
     seqtk sample -s100 read2.fq 10000 > sub2.fq
 
 
-Trim low-quality bases from both ends using the Phred algorithm:
 利用Phred公式从两头修剪低质量bases:
 
     seqtk trimfq in.fq > out.fq
 
 
-Trim 5bp from the left end of each read and 10bp from the right end:
 从左端修剪5bp，从右端修剪10bp的。
 
     seqtk trimfq -b 5 -e 10 in.fa > out.fa
 
 
-Untangle an interleaved paired-end FASTQ file. If a FASTQ file has paired-end reads intermingled, and you want to separate them into separate /1 and /2 files, and assuming the /1 reads precede the /2 reads:
-解开一个交错的paired-end FASTQ文件。如果FASTQ文件包含混合的 paired-end reads，如果你想把他们分离成/1,/2文件（假设/1 read在/2 read的前面）：
     seqtk seq -l0 -1 interleaved.fq > deinterleaved_1.fq
     seqtk seq -l0 -2 interleaved.fq > deinterleaved_2.fq
 
@@ -377,37 +355,30 @@ Untangle an interleaved paired-end FASTQ file. If a FASTQ file has paired-end re
 [[back to top](#contents)]
 
 
-Print all sequences annotated in a GFF3 file.
 输出GFF3文件中标注的所有的序列
 
     cut -s -f 1,9 yourannots.gff3 | grep $'\t' | cut -f 1 | sort | uniq
 
 
-Determine all feature types annotated in a GFF3 file.
 检测GFF3文件中标注的所有性状类型。
 
     grep -v '^#' yourannots.gff3 | cut -s -f 3 | sort | uniq
 
 
-Determine the number of genes annotated in a GFF3 file.
 检测GFF3文件中标注的基因数量。
 
     grep -c $'\tgene\t' yourannots.gff3
 
 
-Extract all gene IDs from a GFF3 file.
 从GFF3文件中提取所有的基因ID
 
     grep $'\tgene\t' yourannots.gff3 | perl -ne '/ID=([^;]+)/ and printf("%s\n", $1)'
 
 
-Print length of each gene in a GFF3 file.
 输出GFF3文件每个基因的长度
 
     grep $'\tgene\t' yourannots.gff3 | cut -s -f 4,5 | perl -ne '@v = split(/\t/); printf("%d\n", $v[1] - $v[0] + 1)'
 
-
-FASTA header lines to GFF format (assuming the length is in the header as an appended "\_length" as in [Velvet](http://www.ebi.ac.uk/~zerbino/velvet/) assembled transcripts):
 FASTA头列转化为GFF格式（假设头的长度，附加在”\_length“ ,和[Velvet](http://www.ebi.ac.uk/~zerbino/velvet/) assembled transcripts)）
 
     grep '>' file.fasta | awk -F "_" 'BEGIN{i=1; print "##gff-version 3"}{ print $0"\t BLAT\tEXON\t1\t"$10"\t95\t+\t.\tgene_id="$0";transcript_id=Transcript_"i;i++ }' > file.gff
