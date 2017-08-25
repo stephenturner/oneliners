@@ -501,7 +501,11 @@ Common typos:
     alias mf="mv -i"
     alias mroe="more"
     alias c='clear'
+    alias emacs='vim'
 
+Show your `$PATH` in a prettier format:
+
+    alias showpath='echo $PATH | tr ":" "\n" | nl'
 
 Use [pandoc](http://johnmacfarlane.net/pandoc/) to convert a markdown file to PDF:
 
