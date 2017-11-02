@@ -30,6 +30,7 @@ Useful bash one-liners useful for bioinformatics (and [some, more generally usef
 * <http://genomics-array.blogspot.com/2010/11/some-unixperl-oneliners-for.html>
 * <http://bioexpressblog.wordpress.com/2013/04/05/split-multi-fasta-sequence-file/>
 * <http://www.commandlinefu.com/>
+* <http://teaching.cgrb.oregonstate.edu/CGRB/oneil/primer/>
 
 
 
@@ -193,6 +194,13 @@ Count the number of unique lines in file.txt
 
     cat file.txt | sort -u | wc -l
 
+Keep only the first unique line from column 1
+
+    cat file.txt | sort -u -k1,1 > newfile.txt
+
+Keep only the last unique line from column 1
+
+    cat file.txt | sort -u -r -k1,1 > newfile.txt
 
 Find lines shared by 2 files (assumes lines within file1 and file2 are unique; pipe to `wd -l` to count the _number_ of lines shared):
 
@@ -226,7 +234,18 @@ Print all possible 3mer DNA sequence combinations:
 
     echo {A,C,T,G}{A,C,T,G}{A,C,T,G}
 
+Make sure column has no duplicate records
+    
+    sort -k1,d file.txt
+    
+Inner join where key information (e.g. gene name) is found in both files
 
+    join -1 1 -2 1 <(sort -k1,1d file1.txt) <(sort -k1,1d file2.txt)
+    
+Make a long list of significant genes from different treatment, so that each gene is significant in at least one of the treatments
+
+    for in in file1.txt file2.txt file3.txt filen.txt ; do awk '{print $1}' $i >> all-deg.txt ; sort all-deg.txt | uniq > degs.txt ; done
+    
 Untangle an interleaved paired-end FASTQ file. If a FASTQ file has paired-end reads intermingled, and you want to separate them into separate /1 and /2 files, and assuming the /1 reads precede the /2 reads:
 
     cat interleaved.fq |paste - - - - - - - - | tee >(cut -f 1-4 | tr "\t" "\n" > deinterleaved_1.fq) | cut -f 5-8 | tr "\t" "\n" > deinterleaved_2.fq
