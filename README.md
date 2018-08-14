@@ -178,7 +178,12 @@ Calculate the mean length of reads in a fastq file:
     awk 'NR%4==2{sum+=length($0)}END{print sum/(NR/4)}' input.fastq
 
 Convert a VCF file to a BED file
-sed -e 's/chr//' file.vcf | awk '{OFS="\t"; if (!/^#/){print $1,$2-1,$2,$4"/"$5,"+"}}'
+
+    sed -e 's/chr//' file.vcf | awk '{OFS="\t"; if (!/^#/){print $1,$2-1,$2,$4"/"$5,"+"}}'
+
+Create a tab-delimited transcript-to-gene mapping table from a GENCODE GFF. The `substr(x,s,n)` returns _n_ characters from string _x_ starting from position _s_. This gets rid of the quotes and semicolon.
+
+    bioawk -c gff '$feature=="transcript" {print $group}' gencode.v28.annotation.gtf | awk -F ' ' '{print substr($4,2,length($4)-3) "\t" substr($2,2,length($2)-3)}' > txp2gene.tsv
 
 
 ## sort, uniq, cut, etc.
