@@ -596,3 +596,6 @@ Find files containing text (`-l` outputs only the file names, `-i` ignores the c
 
     grep -lir "some text" *
 
+Find all subdirectories you have permission to read and execute in
+    
+    ls -l | egrep "drwxrwx---|drwx------|drwxrwxrwx|drwxr-x---" > folderAccess.txt
