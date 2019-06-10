@@ -112,6 +112,9 @@ Delete everything after and including a line containing `EndOfUsefulData`:
 
     sed -n '/EndOfUsefulData/,$!p' file.txt
 
+Remove duplicates while preserving order
+
+    awk '!visited[$0]++' file.txt
 
 
 
