@@ -274,6 +274,21 @@ Delete all .bam files (Irreversible: use with caution! Confirm list BEFORE delet
     find . -name "*.bam" | xargs rm
 
 
+Find the largest file in a directory:
+
+    find . -type f -printf '%s %p\n' | sort -nr | head -1 | cut -d' ' -f2-
+
+
+Count the number of lines in all files with a specific extension in a directory
+
+    find . -type f -name '*.txt' -exec wc -l {} \; | awk '{total += $1} END {print total}'
+
+
+Find all directories in the current directory that contain files with the extension ".log" and compress them into a tar archive:
+
+    find . -type f -name "*.log" -printf "%h\0" | sort -uz | xargs -0 tar -czvf logs.tar.gz
+
+
 Rename all .txt files to .bak (backup *.txt before doing something else to them, for example):
 
     find . -name "*.txt" | sed "s/\.txt$//" | xargs -i echo mv {}.txt {}.bak | sh
