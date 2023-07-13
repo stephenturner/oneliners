@@ -196,6 +196,18 @@ count missing sample in vcf file per line:
 
     bcftools query -f '[%GT\t]\n' a.bcf |  awk '{miss=0};{for (x=1; x<=NF; x++) if ($x=="./.") {miss+=1}};{print miss}' > nmiss.count
 
+Interleave paired-end fastq files:
+
+    paste <(paste - - - - < reads-1.fastq) \
+          <(paste - - - - < reads-2.fastq) \
+        | tr '\t' '\n' \
+        > reads-int.fastq
+
+Decouple an interleaved fastq file:
+
+    paste - - - - - - - - < reads-int.fastq \
+        | tee >(cut -f 1-4 | tr '\t' '\n' > reads-1.fastq) \
+        | cut -f 5-8 | tr '\t' '\n' > reads-2.fastq
 
 ## sort, uniq, cut, etc.
 
