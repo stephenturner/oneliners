@@ -2,7 +2,7 @@
 
 [![DOI](https://zenodo.org/badge/3882/stephenturner/oneliners.svg)](https://zenodo.org/badge/latestdoi/3882/stephenturner/oneliners)
 
-Useful bash one-liners useful for bioinformatics (and [some, more generally useful](#etc)).  
+Useful bash one-liners useful for bioinformatics (and [some, more generally useful](#etc)).
 
 
 ## Contents
@@ -13,6 +13,7 @@ Useful bash one-liners useful for bioinformatics (and [some, more generally usef
 - [sort, uniq, cut, etc.](#sort-uniq-cut-etc)
 - [find, xargs, and GNU parallel](#find-xargs-and-gnu-parallel)
 - [seqtk](#seqtk)
+- [Samtools](#Samtools)
 - [GFF3 Annotations](#gff3-annotations)
 - [Other generally useful aliases for your .bashrc](#other-generally-useful-aliases-for-your-bashrc)
 - [Etc.](#etc)
@@ -209,7 +210,7 @@ Decouple an interleaved fastq file:
         | tee >(cut -f 1-4 | tr '\t' '\n' > reads-1.fastq) \
         | cut -f 5-8 | tr '\t' '\n' > reads-2.fastq
 
-## sort, uniq, cut, etc.
+## sort, uniq, cut, grep, etc.
 
 [[back to top](#contents)]
 
@@ -265,7 +266,27 @@ Take a fasta file with a bunch of short scaffolds, e.g., labeled `>Scaffold12345
 
 Display hidden control characters:
 
-    python -c "f = open('file.txt', 'r'); f.seek(0); file = f.readlines(); print file" 
+    python -c "f = open('file.txt', 'r'); f.seek(0); file = f.readlines(); print file"
+
+
+Count the number of sequences in a FASTA file
+
+    grep -c "^>" sequence.fasta
+
+
+Extract sequences with a specific ID from a FASTA file:
+
+    grep -A1 -w "desired_ID" your_sequence.fasta
+
+
+Find lines in a GFF file associated with a particular feature like a "gene for example":
+
+    grep -w "gene" annotation_file.gff
+
+
+Filter VCF (Variant Call Format) lines based on a specific chromosome
+
+    grep "^chr1" variants_file.vcf
 
 
 ## find, xargs, and GNU parallel
@@ -391,6 +412,55 @@ Untangle an interleaved paired-end FASTQ file. If a FASTQ file has paired-end re
     seqtk seq -l0 -2 interleaved.fq > deinterleaved_2.fq
 
 
+## Samtools
+
+[[back to top](#contents)]
+
+*Download samtools at [samtools](https://github.com/samtools/samtools). Samtools is a set of utilities for interacting with and manipulating files in the SAM (Sequence Alignment/Map) format for next-generation sequencing data
+
+
+Count the number of reads in a SAM/BAM file:
+
+    samtools view -c file.bam
+
+
+Calculate the average mapping quality in a BAM file:
+
+    samtools view -F 4 file.bam | awk '{sum += $5} END {print sum / NR}
+
+
+Sort a BAM file by coordinates:
+
+    samtools sort file.bam -o sorted_file.bam
+
+
+Index a BAM file:
+
+    samtools index file.bam
+
+
+Convert a BAM file to SAM:
+
+    samtools view -h -o output.sam input
+
+Or
+
+    samtools view -h input.bam > output.sam
+
+
+Convert a SAM file to BAM:
+
+    samtools view -bS file.sam -o output_file.bam
+
+
+Merge multiple BAM files into one:
+
+    samtools merge merged_output.bam file1.bam file2.bam file3.bam
+
+
+Remove duplicates from a sorted BAM file:
+
+    samtools rmdup sorted_file.bam deduplicated_file.bam
 
 
 ## GFF3 Annotations
@@ -457,7 +527,7 @@ Browse 'up' and 'down'
 Ask before removing or overwriting files:
 
     alias mv="mv -i"
-    alias cp="cp -i"  
+    alias cp="cp -i"
     alias rm="rm -i"
 
 
@@ -625,4 +695,3 @@ Exclude a column with cut (e.g., all but the 5th field in a tab-delimited file):
 Find files containing text (`-l` outputs only the file names, `-i` ignores the case `-r` descends into subdirectories)
 
     grep -lir "some text" *
-
