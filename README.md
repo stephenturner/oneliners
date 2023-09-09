@@ -416,7 +416,7 @@ Untangle an interleaved paired-end FASTQ file. If a FASTQ file has paired-end re
 
 [[back to top](#contents)]
 
-*Download samtools at [samtools](https://github.com/samtools/samtools). Samtools is a set of utilities for interacting with and manipulating files in the SAM (Sequence Alignment/Map) format for next-generation sequencing data
+Download samtools at [samtools](https://github.com/samtools/samtools). Samtools is a set of utilities for interacting with and manipulating files in the SAM (Sequence Alignment/Map) format for next-generation sequencing data
 
 
 Count the number of reads in a SAM/BAM file:
